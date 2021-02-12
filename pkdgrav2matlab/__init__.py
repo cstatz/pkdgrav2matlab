@@ -7,12 +7,6 @@ from scipy.io import savemat
 import argparse
 
 
-au = 149597870700.
-sm = 1.98847e30
-t = 31557600./2./np.pi
-d = 0.001
-
-
 # According to: http://www.star.bris.ac.uk/jackdob/pkdgrav_data.html
 # one 8 byte double for mass
 # one 8 byte double for radius
@@ -29,6 +23,11 @@ def read_ss(filename, to_si=True, endianess='>'):
     record_t = np.dtype([('mass', endianess + 'f8'),('radius', endianess + 'f8'),('position',( endianess + 'f8', 3)),
         ('velocity',(endianess + 'f8', 3)),('spin',(endianess + 'f8', 3)),('colour', endianess + 'i4'),('id', endianess + 'i4')])
 
+    au = 149597870700.
+    sm = 1.98847e30
+    t = 31557600./2./np.pi
+    d = 0.001
+
     if not to_si:
         au = 1.
         sm = 1.
@@ -42,9 +41,9 @@ def read_ss(filename, to_si=True, endianess='>'):
     ss = dict()
     ss['mass'] = data['mass'][0] * sm  # sm -> kg
     ss['radius'] = data['radius'][0] * au  # au -> m
-    ss['position'] = data['position'] * au  # au -> m 
-    ss['velocity'] = data['velocity'] * au/t  # 2*pi*au/yr -> m/s
-    ss['spin'] = data['spin'] * t  # 2*pi / yr -> 1/s
+    ss['position'] = data['position'][0] * au  # au -> m 
+    ss['velocity'] = data['velocity'][0] * au/t  # 2*pi*au/yr -> m/s
+    ss['spin'] = data['spin'][0] * t  # 2*pi / yr -> 1/s
     ss['group_id'] = data['id'][0]
     ss['colour'] = data['colour'][0]
     ss['derived_density'] = 3./(4. * np.pi) * ss['mass'] / ss['radius']**3 * d
