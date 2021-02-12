@@ -66,7 +66,7 @@ def main():
     parser.add_argument('-e', '--endianess', type=str, default='>', help="Select the endianess of the results file (this might vary depending on platform): > (big), < (littel), = (native). Default is big endian")
 
     args = parser.parse_args()
-    write_ss_to_mat(args.filename + '.mat', read_ss(args.filename, args.c, args.e))
+    write_ss_to_mat(args.filename + '.mat', read_ss(args.filename, args.si, args.endianess))
 
 
 if __name__ == '__main__':
